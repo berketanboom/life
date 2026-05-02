@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Life OS">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>TAN — Life OS</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #252525;
+    --accent-dj: #ff3c5a;
+    --accent-akademik: #00e5ff;
+    --accent-kariyer: #b8ff57;
+    --accent-kisisel: #ff9f43;
+    --text: #f0f0f0;
+    --text-muted: #666;
+    --text-dim: #3a3a3a;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  /* APP SHELL */
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  /* HEADER */
+  .header {
+    padding: calc(var(--safe-top) + 16px) 20px 14px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .app-title {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  .global-pct {
+    font-size: 22px;
+    font-weight: 800;
+    font-family: 'Space Mono', monospace;
+    background: linear-gradient(135deg, var(--accent-dj), var(--accent-akademik));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .global-bar-wrap {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .global-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-dj), var(--accent-akademik), var(--accent-kariyer));
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* TIME TABS */
+  .time-tabs {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 0 20px;
+    gap: 6px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .time-tabs::-webkit-scrollbar { display: none; }
+
+  .time-tab {
+    padding: 7px 14px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    white-space: nowrap;
+    background: transparent;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .time-tab.active {
+    color: var(--bg);
+    background: var(--text);
+    border-color: var(--text);
+  }
+
+  /* CAT TABS */
+  .cat-tabs {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 10px 20px;
+    gap: 6px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .cat-tabs::-webkit-scrollbar { display: none; }
+
+  .cat-tab {
+    padding: 7px 14px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    font-family: 'Space Mono', monospace;
+    cursor: pointer;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    white-space: nowrap;
+    background: transparent;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .cat-tab .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .cat-tab.active {
+    border-color: transparent;
+  }
+
+  /* SCROLL CONTENT */
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+  }
+
+  /* CAT HEADER */
+  .cat-info {
+    padding: 16px 20px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cat-info-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cat-info-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .cat-info-name {
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .cat-info-count {
+    font-size: 11px;
+    font-family: 'Space Mono', monospace;
+    color: var(--text-muted);
+  }
+
+  .cat-progress-row {
+    padding: 0 20px 14px;
+  }
+
+  .cat-progress-label {
+    font-size: 10px;
+    font-family: 'Space Mono', monospace;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* TASK LIST */
+  .task-list {
+    padding: 0 12px;
+  }
+
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 12px;
+    border-radius: 10px;
+    margin-bottom: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: opacity 0.2s;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .task-item:active { opacity: 0.7; }
+
+  .task-item.done {
+    opacity: 0.4;
+  }
+
+  .task-item.done .task-text {
+    text-decoration: line-through;
+  }
+
+  .task-checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .task-checkbox svg {
+    width: 11px;
+    height: 11px;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .task-item.done .task-checkbox svg { opacity: 1; }
+
+  .task-content { flex: 1; min-width: 0; }
+
+  .task-text {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--text);
+  }
+
+  .task-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    font-family: 'Space Mono', monospace;
+    line-height: 1.4;
+  }
+
+  /* EMPTY */
+  .empty-state {
+    padding: 40px 20px;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 12px;
+    font-family: 'Space Mono', monospace;
+    line-height: 1.8;
+  }
+
+  /* ADD TASK */
+  .add-row {
+    padding: 12px 12px 8px;
+  }
+
+  .add-inner {
+    display: flex;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    align-items: center;
+  }
+
+  .add-inner input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 13px;
+    font-family: 'Syne', sans-serif;
+    outline: none;
+  }
+
+  .add-inner input::placeholder { color: var(--text-dim); }
+
+  .add-inner button {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 20px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 2px;
+    font-weight: 300;
+  }
+
+  /* BOTTOM NAV SPACER */
+  .bottom-space {
+    height: calc(var(--safe-bottom) + 12px);
+    flex-shrink: 0;
+  }
+
+  /* Stats bar per all cats */
+  .all-cats-summary {
+    padding: 12px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+
+  .summary-card-top {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+
+  .summary-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .summary-name {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: 'Space Mono', monospace;
+    color: var(--text-muted);
+  }
+
+  .summary-pct {
+    font-size: 24px;
+    font-weight: 800;
+    font-family: 'Space Mono', monospace;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .summary-bar {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .summary-fill {
+    height: 100%;
+    border-radius: 2px;
+  }
+
+  .summary-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+    margin-top: 4px;
+  }
+
+  /* EDIT MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 200;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: var(--safe-bottom);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .modal-sheet {
+    background: #161616;
+    border-radius: 20px 20px 0 0;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    width: 100%;
+    padding: 20px 20px calc(var(--safe-bottom) + 20px);
+  }
+
+  .modal-handle {
+    width: 36px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 0 auto 20px;
+  }
+
+  .modal-title {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 16px;
+  }
+
+  .modal-field {
+    margin-bottom: 12px;
+  }
+
+  .modal-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 6px;
+  }
+
+  .modal-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-size: 14px;
+    font-family: 'Syne', sans-serif;
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  .modal-input:focus { border-color: #444; }
+
+  .modal-select {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: 'Space Mono', monospace;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .modal-btn {
+    flex: 1;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Syne', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .modal-btn:active { opacity: 0.7; }
+
+  .modal-btn-save {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .modal-btn-delete {
+    background: #2a1515;
+    color: var(--accent-dj);
+    border: 1px solid #3a1515;
+    flex: 0 0 auto;
+    padding: 14px 18px;
+  }
+
+  .modal-btn-cancel {
+    background: var(--surface2);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    flex: 0 0 auto;
+    padding: 14px 18px;
+  }
+</style>
+</head>
+<body>
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="modalOverlay" style="display:none" onclick="closeModal(event)">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Görevi Düzenle</div>
+    <div class="modal-field">
+      <div class="modal-label">Başlık</div>
+      <input class="modal-input" id="modalText" type="text" placeholder="Görev başlığı">
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Açıklama (opsiyonel)</div>
+      <input class="modal-input" id="modalSub" type="text" placeholder="Alt açıklama">
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Zaman Dilimi</div>
+      <select class="modal-select" id="modalTime">
+        <option value="bu-hafta">Bu Hafta</option>
+        <option value="bu-ay">Bu Ay</option>
+        <option value="3-ay">3 Ay İçinde</option>
+        <option value="uzun-vade">Uzun Vade</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <div class="modal-label">Alan</div>
+      <select class="modal-select" id="modalCat">
+        <option value="dj">DJ & Müzik</option>
+        <option value="akademik">Akademik</option>
+        <option value="kariyer">Kariyer</option>
+        <option value="kisisel">Kişisel</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal()">İptal</button>
+      <button class="modal-btn modal-btn-delete" onclick="deleteTask()">Sil</button>
+      <button class="modal-btn modal-btn-save" onclick="saveEdit()">Kaydet</button>
+    </div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="header">
+    <div class="header-top">
+      <span class="app-title">TAN — Life OS</span>
+      <span class="global-pct" id="globalPct">0%</span>
+    </div>
+    <div class="global-bar-wrap">
+      <div class="global-bar-fill" id="globalBar" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="time-tabs" id="timeTabs"></div>
+  <div class="cat-tabs" id="catTabs"></div>
+
+  <div class="content" id="content"></div>
+</div>
+
+<script>
+const CATEGORIES = [
+  { id:'hepsi',    label:'Tümü',        color:'#888' },
+  { id:'dj',       label:'DJ & Müzik',  color:'#ff3c5a' },
+  { id:'akademik', label:'Akademik',    color:'#00e5ff' },
+  { id:'kariyer',  label:'Kariyer',     color:'#b8ff57' },
+  { id:'kisisel',  label:'Kişisel',     color:'#ff9f43' },
+];
+
+const TIME_TABS = [
+  { id:'bu-hafta', label:'Bu Hafta' },
+  { id:'bu-ay',    label:'Bu Ay' },
+  { id:'3-ay',     label:'3 Ay' },
+  { id:'uzun-vade',label:'Uzun Vade' },
+  { id:'hepsi',    label:'Tümü' },
+];
+
+const DEFAULT_TASKS = [
+  // DJ
+  { id:'dj1',  cat:'dj', time:'bu-hafta',  text:'SoundCloud / Mixcloud hesabı aç', sub:'Profesyonel profil + bio ekle' },
+  { id:'dj2',  cat:'dj', time:'bu-hafta',  text:'Mix kaydet veya seç', sub:'60–90 dk, house/techno hybrid' },
+  { id:'dj3',  cat:'dj', time:'bu-ay',     text:'Mix\'i SoundCloud\'a yükle', sub:'Tags + Utrecht/Amsterdam lokasyonu' },
+  { id:'dj4',  cat:'dj', time:'bu-ay',     text:'Resident Advisor profili oluştur', sub:'Utrecht lokasyonu, mix linki ekle' },
+  { id:'dj5',  cat:'dj', time:'bu-ay',     text:'BASIS Utrecht\'i takip et', sub:'BASIS Talents gecesi duyurularını izle' },
+  { id:'dj6',  cat:'dj', time:'bu-ay',     text:'ACU, WAS., Poema\'ya DM at', sub:'"Eylül\'de taşınıyorum" — kısa, profesyonel' },
+  { id:'dj7',  cat:'dj', time:'3-ay',      text:'Utrecht\'e varınca BASIS\'e git', sub:'Yüz yüze tanış, sahne arkası insanlar' },
+  { id:'dj8',  cat:'dj', time:'3-ay',      text:'İlk küçük gig veya student partisi al', sub:'Network başlangıcı' },
+  { id:'dj9',  cat:'dj', time:'3-ay',      text:'Local DJ\'lerle sosyal medyada etkileşim', sub:'Repost, yorum — yüzün tanınsın' },
+  { id:'dj10', cat:'dj', time:'uzun-vade', text:'BASIS Talents\'ta set al', sub:'6 ay network sonrası başvur' },
+  { id:'dj11', cat:'dj', time:'uzun-vade', text:'Amsterdam\'da ilk gig', sub:'OT301 veya Vondelbunker' },
+  // Akademik
+  { id:'ak1',  cat:'akademik', time:'bu-hafta',  text:'Thesis PsychoPy v3 son bug kontrolü', sub:'UI\'ya dokunmadan fonksiyon testleri' },
+  { id:'ak2',  cat:'akademik', time:'bu-hafta',  text:'Utrecht koşullu kabul gereksinimlerini listele', sub:'Conditional offer detaylarını oku' },
+  { id:'ak3',  cat:'akademik', time:'bu-ay',     text:'Burs sonuçlarını takip et', sub:'NL Holland + Radboud — Nisan ortası' },
+  { id:'ak4',  cat:'akademik', time:'bu-ay',     text:'UvA itiraz durumunu kontrol et', sub:'Brain & Cognition in Society' },
+  { id:'ak5',  cat:'akademik', time:'bu-ay',     text:'Imperial College başvurularını takip et', sub:'MSc Translational + MRes Experimental' },
+  { id:'ak6',  cat:'akademik', time:'bu-ay',     text:'Thesis veri toplama takvimi oluştur', sub:'Katılımcı planı, Seda Dural ile sync' },
+  { id:'ak7',  cat:'akademik', time:'3-ay',      text:'Thesis yazımını tamamla', sub:'Giriş → Yöntem → Bulgular → Tartışma' },
+  { id:'ak8',  cat:'akademik', time:'3-ay',      text:'Mezuniyet hazırlıkları', sub:'Haziran 2026 — diploma, evrak' },
+  { id:'ak9',  cat:'akademik', time:'uzun-vade', text:'Utrecht ilk dönem derslerine hazırlık', sub:'Applied Cog Psy müfredatını incele' },
+  { id:'ak10', cat:'akademik', time:'uzun-vade', text:'ISMIR için paper fikri geliştir', sub:'Thesis bulgularından türet' },
+  // Kariyer
+  { id:'kar1', cat:'kariyer', time:'bu-hafta',  text:'LinkedIn profilini güncelle', sub:'Utrecht kabul + thesis başlığını ekle' },
+  { id:'kar2', cat:'kariyer', time:'bu-hafta',  text:'Ryan McGarry (Google UX) ile mesajlaş', sub:'Mezuniyet sonrası plan — görüşme talebi' },
+  { id:'kar3', cat:'kariyer', time:'bu-ay',     text:'SQL öğrenmeye başla', sub:'Mode Analytics veya Leetcode SQL' },
+  { id:'kar4', cat:'kariyer', time:'bu-ay',     text:'Figma temellerini öğren', sub:'Figma Community — haftada 2 saat' },
+  { id:'kar5', cat:'kariyer', time:'3-ay',      text:'Utrecht staj yerleşimi araştır', sub:'Spotify Amsterdam + Google takvimi' },
+  { id:'kar6', cat:'kariyer', time:'3-ay',      text:'Spotify Amsterdam staj başvurusu', sub:'LinkedIn + referans zinciri kur' },
+  { id:'kar7', cat:'kariyer', time:'3-ay',      text:'FUGA, Armada, Spinnin\' araştır', sub:'Alternatif staj / junior PM hedefleri' },
+  { id:'kar8', cat:'kariyer', time:'uzun-vade', text:'Spotify Amsterdam veya Google PM rolü', sub:'5 yıl hedefi — Utrecht stajı kritik' },
+  { id:'kar9', cat:'kariyer', time:'uzun-vade', text:'ISMIR konferansına katıl', sub:'Spotify Research ekibiyle yüz yüze' },
+  // Kişisel
+  { id:'kis1', cat:'kisisel', time:'bu-hafta',  text:'Utrecht konaklama araştır', sub:'Öğrenci konutları + kiralık daire' },
+  { id:'kis2', cat:'kisisel', time:'bu-ay',     text:'BSN numarası ve Hollanda kayıt süreci', sub:'Taşındıktan sonra ilk 5 iş günü' },
+  { id:'kis3', cat:'kisisel', time:'bu-ay',     text:'Temel Hollandaca öğren', sub:'Language Transfer Dutch — ücretsiz' },
+  { id:'kis4', cat:'kisisel', time:'3-ay',      text:'Utrecht\'e taşınma lojistiği', sub:'Uçuş, kargo, geçici konaklama' },
+  { id:'kis5', cat:'kisisel', time:'uzun-vade', text:'Amsterdam/Utrecht\'te düzen kur', sub:'Sosyal çevre, rutin, müzik+akademi dengesi' },
+];
+
+const STORAGE_KEY = 'tan_life_os_v3';
+let state = { tasks: [], activeTime: 'bu-hafta', activeCat: 'hepsi' };
+
+function load() {
+  // Try localStorage first, then sessionStorage as fallback
+  let raw = null;
+  try { raw = localStorage.getItem(STORAGE_KEY); } catch(e) {}
+  if (!raw) { try { raw = sessionStorage.getItem(STORAGE_KEY); } catch(e) {} }
+  if (!raw) {
+    // Try cookie fallback
+    try {
+      const match = document.cookie.match(new RegExp('(?:^|; )' + STORAGE_KEY + '=([^;]*)'));
+      if (match) raw = decodeURIComponent(match[1]);
+    } catch(e) {}
+  }
+  if (raw) {
+    try {
+      const s = JSON.parse(raw);
+      // Merge: keep done states from saved, keep new default tasks
+      const savedMap = {};
+      (s.tasks||[]).forEach(t => { savedMap[t.id] = t; });
+      // Start with all defaults, apply saved done states
+      const merged = DEFAULT_TASKS.map(t => ({
+        ...t,
+        done: savedMap[t.id] ? savedMap[t.id].done : false
+      }));
+      // Add any custom tasks that aren't in defaults
+      (s.tasks||[]).filter(t => t.id.startsWith('c_')).forEach(ct => {
+        merged.push(ct);
+      });
+      state.tasks = merged;
+      state.activeTime = s.activeTime || 'bu-hafta';
+      state.activeCat = s.activeCat || 'hepsi';
+    } catch(e) {
+      state.tasks = DEFAULT_TASKS.map(t=>({...t,done:false}));
+    }
+  } else {
+    state.tasks = DEFAULT_TASKS.map(t=>({...t,done:false}));
+  }
+}
+
+function save() {
+  const data = JSON.stringify(state);
+  // Write to all storage methods for maximum persistence
+  try { localStorage.setItem(STORAGE_KEY, data); } catch(e) {}
+  try { sessionStorage.setItem(STORAGE_KEY, data); } catch(e) {}
+  // Cookie fallback (expires 1 year)
+  try {
+    const exp = new Date(); exp.setFullYear(exp.getFullYear()+1);
+    // Only store done states in cookie (size limit)
+    const doneIds = state.tasks.filter(t=>t.done).map(t=>t.id);
+    document.cookie = STORAGE_KEY+'_done='+encodeURIComponent(JSON.stringify(doneIds))+'; expires='+exp.toUTCString()+'; path=/; SameSite=Lax';
+  } catch(e) {}
+}
+
+function globalPct() {
+  if (!state.tasks.length) return 0;
+  return Math.round(state.tasks.filter(t=>t.done).length / state.tasks.length * 100);
+}
+
+function catStats(catId) {
+  const tasks = catId === 'hepsi' ? state.tasks : state.tasks.filter(t=>t.cat===catId);
+  if (!tasks.length) return {pct:0,done:0,total:0};
+  const done = tasks.filter(t=>t.done).length;
+  return {pct:Math.round(done/tasks.length*100), done, total:tasks.length};
+}
+
+function getVisible() {
+  return state.tasks.filter(t => {
+    const timeMatch = state.activeTime === 'hepsi' || t.time === state.activeTime;
+    const catMatch  = state.activeCat  === 'hepsi' || t.cat  === state.activeCat;
+    return timeMatch && catMatch;
+  });
+}
+
+function getCatColor(catId) {
+  return CATEGORIES.find(c=>c.id===catId)?.color || '#888';
+}
+
+function toggle(id) {
+  const t = state.tasks.find(t=>t.id===id);
+  if (t) { t.done = !t.done; save(); render(); }
+}
+
+function addTask(text) {
+  if (!text.trim()) return;
+  state.tasks.push({
+    id: 'c_'+Date.now(),
+    cat: state.activeCat === 'hepsi' ? 'kisisel' : state.activeCat,
+    time: state.activeTime === 'hepsi' ? 'bu-ay' : state.activeTime,
+    text: text.trim(), sub:'', done:false
+  });
+  save(); render();
+}
+
+function renderTimeTabs() {
+  document.getElementById('timeTabs').innerHTML = TIME_TABS.map(t=>`
+    <button class="time-tab ${state.activeTime===t.id?'active':''}" onclick="setTime('${t.id}')">${t.label}</button>
+  `).join('');
+}
+
+function renderCatTabs() {
+  document.getElementById('catTabs').innerHTML = CATEGORIES.map(c=>`
+    <button class="cat-tab ${state.activeCat===c.id?'active':''}"
+      style="${state.activeCat===c.id?`background:${c.color}22;border-color:${c.color}66;color:${c.color};`:''}"
+      onclick="setCat('${c.id}')">
+      ${c.id!=='hepsi'?`<span class="dot" style="background:${c.color}"></span>`:''}
+      ${c.label}
+    </button>
+  `).join('');
+}
+
+function renderContent() {
+  const el = document.getElementById('content');
+
+  // "Tümü" cat view — show summary cards
+  if (state.activeCat === 'hepsi') {
+    const summaryCards = CATEGORIES.filter(c=>c.id!=='hepsi').map(c=>{
+      const s = catStats(c.id);
+      return `<div class="summary-card">
+        <div class="summary-card-top">
+          <div class="summary-dot" style="background:${c.color}"></div>
+          <div class="summary-name">${c.label}</div>
+        </div>
+        <div class="summary-pct" style="color:${c.color}">${s.pct}%</div>
+        <div class="summary-bar"><div class="summary-fill" style="width:${s.pct}%;background:${c.color}"></div></div>
+        <div class="summary-sub">${s.done}/${s.total} görev</div>
+      </div>`;
+    }).join('');
+
+    const tasks = getVisible();
+    const taskHTML = tasks.length === 0
+      ? `<div class="empty-state">Bu zaman diliminde<br>görev yok</div>`
+      : tasks.map(t => taskItemHTML(t)).join('');
+
+    el.innerHTML = `
+      <div class="all-cats-summary">${summaryCards}</div>
+      <div class="task-list">${taskHTML}</div>
+      <div class="add-row">
+        <div class="add-inner">
+          <input id="addInput" placeholder="Yeni görev ekle..." onkeydown="if(event.key==='Enter'){addTask(this.value);this.value='';}">
+          <button onclick="const i=document.getElementById('addInput');addTask(i.value);i.value=''">+</button>
+        </div>
+      </div>
+      <div class="bottom-space"></div>
+    `;
+    return;
+  }
+
+  const cat = CATEGORIES.find(c=>c.id===state.activeCat);
+  const s = catStats(cat.id);
+  const tasks = getVisible();
+
+  const taskHTML = tasks.length === 0
+    ? `<div class="empty-state">Bu zaman diliminde<br>görev yok<br><span style="color:var(--text-dim);font-size:10px;margin-top:8px;display:block">Aşağıdan ekleyebilirsin</span></div>`
+    : tasks.map(t => taskItemHTML(t)).join('');
+
+  el.innerHTML = `
+    <div class="cat-info">
+      <div class="cat-info-left">
+        <div class="cat-info-dot" style="background:${cat.color}"></div>
+        <div class="cat-info-name" style="color:${cat.color}">${cat.label}</div>
+      </div>
+      <div class="cat-info-count">${s.done}/${s.total}</div>
+    </div>
+    <div class="cat-progress-row">
+      <div class="cat-progress-label">${s.pct}% tamamlandı</div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${s.pct}%;background:${cat.color}"></div>
+      </div>
+    </div>
+    <div class="task-list">${taskHTML}</div>
+    <div class="add-row">
+      <div class="add-inner">
+        <input id="addInput" placeholder="Yeni görev ekle..." onkeydown="if(event.key==='Enter'){addTask(this.value);this.value='';}">
+        <button onclick="const i=document.getElementById('addInput');addTask(i.value);i.value=''">+</button>
+      </div>
+    </div>
+    <div class="bottom-space"></div>
+  `;
+}
+
+function taskItemHTML(t) {
+  const color = getCatColor(t.cat);
+  return `<div class="task-item ${t.done?'done':''}"
+    onclick="toggle('${t.id}')"
+    ontouchstart="pressTimer=setTimeout(()=>{clearTimeout(pressTimer);openEdit('${t.id}')},500)"
+    ontouchend="clearTimeout(pressTimer)"
+    ontouchmove="clearTimeout(pressTimer)"
+    oncontextmenu="event.preventDefault();openEdit('${t.id}')">
+    <div class="task-checkbox" style="${t.done?`background:${color}22;border-color:${color}55;`:`border-color:${color}44;`}">
+      <svg viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1.5 5.5L4.5 8.5L9.5 2.5" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="task-content">
+      <div class="task-text">${t.text}</div>
+      ${t.sub?`<div class="task-sub">${t.sub}</div>`:''}
+    </div>
+    <div style="color:var(--text-dim);font-size:16px;padding-left:4px;flex-shrink:0" onclick="event.stopPropagation();openEdit('${t.id}')">⋯</div>
+  </div>`;
+}
+
+function setTime(id) { state.activeTime = id; save(); render(); }
+function setCat(id)  { state.activeCat  = id; save(); render(); }
+
+// EDIT MODAL
+let editingId = null;
+let pressTimer = null;
+
+function openEdit(id) {
+  const t = state.tasks.find(t=>t.id===id);
+  if (!t) return;
+  editingId = id;
+  document.getElementById('modalText').value = t.text;
+  document.getElementById('modalSub').value = t.sub || '';
+  document.getElementById('modalTime').value = t.time;
+  document.getElementById('modalCat').value = t.cat;
+  document.getElementById('modalOverlay').style.display = 'flex';
+  setTimeout(() => document.getElementById('modalText').focus(), 100);
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modalOverlay')) return;
+  document.getElementById('modalOverlay').style.display = 'none';
+  editingId = null;
+}
+
+function saveEdit() {
+  const t = state.tasks.find(t=>t.id===editingId);
+  if (!t) return;
+  const text = document.getElementById('modalText').value.trim();
+  if (!text) return;
+  t.text = text;
+  t.sub  = document.getElementById('modalSub').value.trim();
+  t.time = document.getElementById('modalTime').value;
+  t.cat  = document.getElementById('modalCat').value;
+  document.getElementById('modalOverlay').style.display = 'none';
+  editingId = null;
+  save(); render();
+}
+
+function deleteTask() {
+  if (!editingId) return;
+  state.tasks = state.tasks.filter(t=>t.id!==editingId);
+  document.getElementById('modalOverlay').style.display = 'none';
+  editingId = null;
+  save(); render();
+}
+
+function render() {
+  const pct = globalPct();
+  document.getElementById('globalPct').textContent = pct + '%';
+  document.getElementById('globalBar').style.width = pct + '%';
+  renderTimeTabs();
+  renderCatTabs();
+  renderContent();
+}
+
+// Service worker — relative path for GitHub Pages subdir
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(()=>{});
+  });
+}
+// iOS PWA: save before page hides/unloads
+window.addEventListener('pagehide', save);
+window.addEventListener('beforeunload', save);
+// Save every 10 seconds as extra safety net
+setInterval(save, 10000);
+
+load();
+render();
+</script>
+</body>
+</html>
