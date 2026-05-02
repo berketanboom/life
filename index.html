@@ -12,104 +12,93 @@
 <title>TAN — Life OS</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:#0a0a0a; --surface:#111; --surface2:#1a1a1a; --border:#252525;
-    --text:#f0f0f0; --muted:#666; --dim:#3a3a3a;
-    --red:#ff3c5a; --cyan:#00e5ff; --green:#b8ff57; --orange:#ff9f43;
-    --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px);
-  }
+  :root{--bg:#0a0a0a;--surface:#111111;--surface2:#1a1a1a;--border:#252525;--accent-dj:#ff3c5a;--accent-akademik:#00e5ff;--accent-kariyer:#b8ff57;--accent-kisisel:#ff9f43;--text:#f0f0f0;--text-muted:#666;--text-dim:#3a3a3a;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;height:100%;overflow:hidden;overscroll-behavior:none}
   #app{display:flex;flex-direction:column;height:100vh;height:100dvh}
-
-  .header{padding:calc(var(--safe-top) + 14px) 20px 12px;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0}
-  .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-  .app-title{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);font-family:'Space Mono',monospace}
+  .header{padding:calc(var(--safe-top) + 16px) 20px 14px;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0}
+  .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .app-title{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--text-muted);font-family:'Space Mono',monospace}
   .header-right{display:flex;align-items:center;gap:10px}
-  .global-pct{font-size:20px;font-weight:800;font-family:'Space Mono',monospace;background:linear-gradient(135deg,var(--red),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-  .overdue-pill{font-size:10px;font-family:'Space Mono',monospace;background:var(--red)22;color:var(--red);border:1px solid var(--red)44;padding:3px 8px;border-radius:20px;display:none}
+  .overdue-pill{font-size:10px;font-family:'Space Mono',monospace;background:#ff3c5a22;color:#ff3c5a;border:1px solid #ff3c5a44;padding:3px 8px;border-radius:20px;display:none}
   .overdue-pill.show{display:block}
-  .g-bar{height:2px;background:var(--border);border-radius:2px;overflow:hidden}
-  .g-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--cyan),var(--green));border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1)}
-
-  .tabs{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:8px 16px;gap:6px;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0}
-  .tabs::-webkit-scrollbar{display:none}
-  .tb{padding:6px 13px;font-size:10px;letter-spacing:.1em;text-transform:uppercase;font-family:'Space Mono',monospace;color:var(--muted);cursor:pointer;border-radius:20px;border:1px solid var(--border);white-space:nowrap;background:transparent;transition:all .2s;flex-shrink:0;display:flex;align-items:center;gap:5px}
-  .tb.active{color:var(--bg);background:var(--text);border-color:var(--text)}
-  .tb .dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-  .tb .bdg{background:var(--red);color:#fff;font-size:9px;padding:1px 5px;border-radius:10px}
-
+  .global-pct{font-size:22px;font-weight:800;font-family:'Space Mono',monospace;background:linear-gradient(135deg,var(--accent-dj),var(--accent-akademik));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+  .global-bar-wrap{height:2px;background:var(--border);border-radius:2px;overflow:hidden}
+  .global-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent-dj),var(--accent-akademik),var(--accent-kariyer));border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+  .time-tabs{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:10px 20px;gap:6px;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0}
+  .time-tabs::-webkit-scrollbar{display:none}
+  .time-tab{padding:7px 14px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-family:'Space Mono',monospace;color:var(--text-muted);cursor:pointer;border-radius:20px;border:1px solid var(--border);white-space:nowrap;background:transparent;transition:all .2s;flex-shrink:0;display:flex;align-items:center;gap:5px}
+  .time-tab.active{color:var(--bg);background:var(--text);border-color:var(--text)}
+  .time-tab .bdg{background:#ff3c5a;color:#fff;font-size:9px;padding:1px 5px;border-radius:10px}
+  .cat-tabs{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:10px 20px;gap:6px;background:var(--bg);border-bottom:1px solid var(--border);flex-shrink:0}
+  .cat-tabs::-webkit-scrollbar{display:none}
+  .cat-tab{padding:7px 14px;font-size:11px;letter-spacing:.08em;font-family:'Space Mono',monospace;cursor:pointer;border-radius:20px;border:1px solid var(--border);white-space:nowrap;background:transparent;transition:all .2s;flex-shrink:0;color:var(--text-muted);display:flex;align-items:center;gap:6px}
+  .cat-tab .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .cat-tab.active{border-color:transparent}
   .content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior-y:contain}
-
-  .sec-hdr{padding:14px 16px 6px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-family:'Space Mono',monospace;color:var(--dim);display:flex;align-items:center;gap:8px}
-  .sec-hdr.ov{color:var(--red)}
-  .sec-hdr.tw{color:var(--green)}
-  .sec-line{flex:1;height:1px;background:var(--border)}
-
-  .sum-grid{padding:12px 12px 4px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .sum-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;transition:border-color .2s}
-  .sum-card:active{opacity:.8}
-  .sum-top{display:flex;align-items:center;gap:6px;margin-bottom:6px}
-  .sum-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-  .sum-name{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-family:'Space Mono',monospace;color:var(--muted)}
-  .sum-pct{font-size:22px;font-weight:800;font-family:'Space Mono',monospace;line-height:1;margin-bottom:5px}
-  .sum-bar{height:2px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:4px}
-  .sum-fill{height:100%;border-radius:2px;transition:width .5s}
-  .sum-sub{font-size:9px;color:var(--muted);font-family:'Space Mono',monospace}
-  .sum-ov{font-size:9px;color:var(--red);font-family:'Space Mono',monospace;margin-top:2px}
-
-  .cat-bar{padding:12px 16px 8px;display:flex;align-items:center;justify-content:space-between}
-  .cat-bar-l{display:flex;align-items:center;gap:8px}
-  .cat-bar-dot{width:8px;height:8px;border-radius:50%}
-  .cat-bar-name{font-size:14px;font-weight:700}
-  .cat-bar-r{font-size:10px;font-family:'Space Mono',monospace;color:var(--muted)}
-  .cat-prog{padding:0 16px 12px}
-  .cat-prog-lbl{font-size:10px;font-family:'Space Mono',monospace;color:var(--muted);margin-bottom:5px}
-  .pbar{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
-  .pfill{height:100%;border-radius:2px;transition:width .5s}
-
-  .tlist{padding:0 12px}
-  .ti{display:flex;align-items:flex-start;gap:11px;padding:11px 12px;border-radius:10px;margin-bottom:4px;background:var(--surface);border:1px solid var(--border);cursor:pointer;transition:opacity .15s;-webkit-user-select:none;user-select:none}
-  .ti:active{opacity:.7}
-  .ti.done{opacity:.35}
-  .ti.done .tt{text-decoration:line-through}
-  .ti.ov{border-color:var(--red)33;background:#1a0a0c}
-  .chk{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s}
-  .chk svg{width:11px;height:11px;opacity:0;transition:opacity .15s}
-  .ti.done .chk svg{opacity:1}
-  .tc{flex:1;min-width:0}
-  .tt{font-size:13.5px;font-weight:600;line-height:1.35;color:var(--text)}
-  .ts{font-size:10px;color:var(--muted);margin-top:3px;font-family:'Space Mono',monospace;line-height:1.4}
-  .td{font-size:10px;margin-top:4px;font-family:'Space Mono',monospace}
-  .td.ov{color:var(--red)}
-  .td.tw{color:var(--green)}
-  .td.up{color:var(--dim)}
-  .tmenu{color:var(--dim);font-size:16px;padding-left:4px;flex-shrink:0;line-height:1}
-
-  .add-row{padding:10px 12px 6px}
+  .cat-info{padding:16px 20px 10px;display:flex;align-items:center;justify-content:space-between}
+  .cat-info-left{display:flex;align-items:center;gap:8px}
+  .cat-info-dot{width:8px;height:8px;border-radius:50%}
+  .cat-info-name{font-size:15px;font-weight:700}
+  .cat-info-count{font-size:11px;font-family:'Space Mono',monospace;color:var(--text-muted)}
+  .cat-progress-row{padding:0 20px 14px}
+  .cat-progress-label{font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);margin-bottom:6px}
+  .progress-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+  .progress-fill{height:100%;border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+  .task-list{padding:0 12px}
+  .task-item{display:flex;align-items:flex-start;gap:12px;padding:13px 12px;border-radius:10px;margin-bottom:4px;background:var(--surface);border:1px solid var(--border);cursor:pointer;transition:opacity .2s;-webkit-user-select:none;user-select:none}
+  .task-item:active{opacity:.7}
+  .task-item.done{opacity:.35}
+  .task-item.done .task-text{text-decoration:line-through}
+  .task-item.overdue{border-color:#ff3c5a33;background:#1a0a0c}
+  .task-checkbox{width:20px;height:20px;border-radius:6px;border:1.5px solid var(--border);flex-shrink:0;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+  .task-checkbox svg{width:11px;height:11px;opacity:0;transition:opacity .15s}
+  .task-item.done .task-checkbox svg{opacity:1}
+  .task-content{flex:1;min-width:0}
+  .task-text{font-size:14px;font-weight:600;line-height:1.35;color:var(--text)}
+  .task-sub{font-size:11px;color:var(--text-muted);margin-top:3px;font-family:'Space Mono',monospace;line-height:1.4}
+  .task-date{font-size:10px;margin-top:4px;font-family:'Space Mono',monospace}
+  .task-date.overdue-d{color:#ff3c5a}
+  .task-date.thisweek-d{color:var(--accent-kariyer)}
+  .task-date.future-d{color:var(--text-dim)}
+  .task-menu{color:var(--text-dim);font-size:16px;padding-left:4px;flex-shrink:0}
+  .add-row{padding:12px 12px 8px}
   .add-inner{display:flex;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px;align-items:center}
   .add-inner input{flex:1;background:transparent;border:none;color:var(--text);font-size:13px;font-family:'Syne',sans-serif;outline:none}
-  .add-inner input::placeholder{color:var(--dim)}
-  .add-inner button{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1;padding:0 2px}
-  .bsp{height:calc(var(--safe-bottom) + 12px);flex-shrink:0}
-  .empty{padding:36px 20px;text-align:center;color:var(--dim);font-size:11px;font-family:'Space Mono',monospace;line-height:2}
-
-  .moverlay{display:none;position:fixed;inset:0;background:#000c;z-index:200;align-items:flex-end;justify-content:center;padding:0 0 calc(var(--safe-bottom) + 8px)}
-  .moverlay.open{display:flex}
+  .add-inner input::placeholder{color:var(--text-dim)}
+  .add-inner button{background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer;line-height:1;padding:0 2px}
+  .bottom-space{height:calc(var(--safe-bottom) + 12px);flex-shrink:0}
+  .empty-state{padding:40px 20px;text-align:center;color:var(--text-dim);font-size:12px;font-family:'Space Mono',monospace;line-height:1.8}
+  .all-cats-summary{padding:12px 12px 4px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .summary-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer}
+  .summary-card:active{opacity:.8}
+  .summary-card-top{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+  .summary-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .summary-name{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-family:'Space Mono',monospace;color:var(--text-muted)}
+  .summary-pct{font-size:24px;font-weight:800;font-family:'Space Mono',monospace;line-height:1;margin-bottom:6px}
+  .summary-bar{height:2px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:4px}
+  .summary-fill{height:100%;border-radius:2px}
+  .summary-sub{font-size:9px;color:var(--text-muted);font-family:'Space Mono',monospace}
+  .summary-ov{font-size:9px;color:#ff3c5a;font-family:'Space Mono',monospace;margin-top:2px}
+  .sec-div{padding:12px 16px 4px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-family:'Space Mono',monospace;color:var(--text-dim);display:flex;align-items:center;gap:8px}
+  .sec-div.ov{color:#ff3c5a}
+  .sec-div.tw{color:var(--accent-kariyer)}
+  .sec-div-line{flex:1;height:1px;background:var(--border)}
+  .modal-overlay{display:none;position:fixed;inset:0;background:#000000cc;z-index:200;align-items:flex-end;justify-content:center;padding:0 0 calc(var(--safe-bottom) + 8px)}
+  .modal-overlay.open{display:flex}
   .modal{background:#161616;border-radius:20px 20px 14px 14px;width:100%;max-width:480px;padding:20px 20px 16px;border:1px solid var(--border)}
-  .mtitle{font-size:11px;letter-spacing:.15em;text-transform:uppercase;font-family:'Space Mono',monospace;color:var(--muted);margin-bottom:14px}
-  .mfield{margin-bottom:10px}
-  .mfield label{font-size:10px;font-family:'Space Mono',monospace;color:var(--dim);display:block;margin-bottom:4px;letter-spacing:.1em;text-transform:uppercase}
-  .minput{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-size:13px;font-family:'Syne',sans-serif;outline:none}
-  .minput:focus{border-color:#444}
-  .mselect{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-size:13px;font-family:'Syne',sans-serif;outline:none;-webkit-appearance:none}
-  .mrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .mactions{display:flex;gap:8px;margin-top:14px}
-  .mbtn{flex:1;padding:11px;border-radius:10px;font-size:12px;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;border:none;transition:opacity .15s}
-  .mbtn:active{opacity:.8}
-  .mbtn.save{background:var(--text);color:var(--bg)}
-  .mbtn.del{background:var(--red)22;color:var(--red);border:1px solid var(--red)44;flex:0 0 auto;padding:11px 16px}
-  .mbtn.cancel{background:var(--surface2);color:var(--muted);flex:0 0 auto;padding:11px 16px}
+  .modal-title{font-size:12px;letter-spacing:.15em;text-transform:uppercase;font-family:'Space Mono',monospace;color:var(--text-muted);margin-bottom:14px}
+  .modal-field{margin-bottom:10px}
+  .modal-field label{font-size:10px;font-family:'Space Mono',monospace;color:var(--text-dim);display:block;margin-bottom:4px;letter-spacing:.1em;text-transform:uppercase}
+  .modal-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-size:13px;font-family:'Syne',sans-serif;outline:none}
+  .modal-input:focus{border-color:#444}
+  .modal-select{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-size:13px;font-family:'Syne',sans-serif;outline:none;-webkit-appearance:none}
+  .modal-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .modal-actions{display:flex;gap:8px;margin-top:14px}
+  .modal-btn{flex:1;padding:11px;border-radius:10px;font-size:12px;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;border:none}
+  .modal-btn.save{background:var(--text);color:var(--bg)}
+  .modal-btn.cancel{background:var(--surface2);color:var(--text-muted);flex:0 0 auto;padding:11px 16px}
+  .modal-btn.del{background:#ff3c5a22;color:#ff3c5a;border:1px solid #ff3c5a44;flex:0 0 auto;padding:11px 16px}
 </style>
 </head>
 <body>
@@ -119,375 +108,122 @@
       <span class="app-title">TAN — Life OS</span>
       <div class="header-right">
         <span class="overdue-pill" id="ovPill"></span>
-        <span class="global-pct" id="gPct">0%</span>
+        <span class="global-pct" id="globalPct">0%</span>
       </div>
     </div>
-    <div class="g-bar"><div class="g-fill" id="gBar" style="width:0%"></div></div>
+    <div class="global-bar-wrap"><div class="global-bar-fill" id="globalBar" style="width:0%"></div></div>
   </div>
-  <div class="tabs" id="timeTabs"></div>
-  <div class="tabs" id="catTabs"></div>
+  <div class="time-tabs" id="timeTabs"></div>
+  <div class="cat-tabs" id="catTabs"></div>
   <div class="content" id="content"></div>
 </div>
-
-<div class="moverlay" id="moverlay" onclick="closeModalOutside(event)">
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
   <div class="modal">
-    <div class="mtitle" id="mtitle">Görevi Düzenle</div>
-    <div class="mfield"><label>Görev</label><input class="minput" id="mtext" placeholder="Ne yapılacak?"></div>
-    <div class="mfield"><label>Not (opsiyonel)</label><input class="minput" id="msub" placeholder="Detay..."></div>
-    <div class="mrow">
-      <div class="mfield"><label>Alan</label>
-        <select class="mselect" id="mcat">
+    <div class="modal-title" id="modalTitle">Görevi Düzenle</div>
+    <div class="modal-field"><label>Görev</label><input class="modal-input" id="mText" placeholder="Ne yapılacak?"></div>
+    <div class="modal-field"><label>Not (opsiyonel)</label><input class="modal-input" id="mSub" placeholder="Detay..."></div>
+    <div class="modal-row">
+      <div class="modal-field"><label>Alan</label>
+        <select class="modal-select" id="mCat">
           <option value="dj">DJ & Müzik</option>
           <option value="akademik">Akademik</option>
           <option value="kariyer">Kariyer</option>
           <option value="kisisel">Kişisel</option>
         </select>
       </div>
-      <div class="mfield"><label>Bitiş Tarihi</label><input class="minput" id="mdate" type="date"></div>
+      <div class="modal-field"><label>Bitiş Tarihi</label><input class="modal-input" id="mDate" type="date"></div>
     </div>
-    <div class="mactions">
-      <button class="mbtn save" onclick="saveModal()">Kaydet</button>
-      <button class="mbtn cancel" onclick="closeModal()">İptal</button>
-      <button class="mbtn del" id="delBtn" onclick="deleteTask()">Sil</button>
+    <div class="modal-actions">
+      <button class="modal-btn save" onclick="saveModal()">Kaydet</button>
+      <button class="modal-btn cancel" onclick="closeModal()">İptal</button>
+      <button class="modal-btn del" id="delBtn" onclick="deleteTask()">Sil</button>
     </div>
   </div>
 </div>
-
 <script>
-// ── DATE UTILS ──
 function ymd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function today(){return ymd(new Date())}
 function weekEnd(){const d=new Date(),day=d.getDay(),diff=day===0?6:7-day;d.setDate(d.getDate()+diff);return ymd(d)}
 function monthEnd(){const d=new Date();return ymd(new Date(d.getFullYear(),d.getMonth()+1,0))}
 function qEnd(){const d=new Date();d.setMonth(d.getMonth()+3);return ymd(d)}
-const FAR='2027-12-31'
-
-function fmtDate(s){
-  if(!s)return'';
-  const[y,m,d]=s.split('-');
-  return d+' '+['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'][parseInt(m)-1]
-}
-
-function dateInfo(dueDate){
-  if(!dueDate)return null
-  const t=today(),we=weekEnd()
-  if(dueDate<t)return{label:'⚠ GECİKMİŞ',cls:'ov'}
-  if(dueDate===t)return{label:'● BUGÜN',cls:'tw'}
-  if(dueDate<=we)return{label:'Bu hafta · '+fmtDate(dueDate),cls:'tw'}
-  return{label:fmtDate(dueDate),cls:'up'}
-}
-
-// ── CATS & TABS ──
-const CATS=[
-  {id:'hepsi',label:'Tümü',color:'#888'},
-  {id:'dj',label:'DJ & Müzik',color:'#ff3c5a'},
-  {id:'akademik',label:'Akademik',color:'#00e5ff'},
-  {id:'kariyer',label:'Kariyer',color:'#b8ff57'},
-  {id:'kisisel',label:'Kişisel',color:'#ff9f43'},
-]
-const TTABS=[
-  {id:'gecikmiş',label:'Gecikmiş'},
-  {id:'bu-hafta',label:'Bu Hafta'},
-  {id:'bu-ay',label:'Bu Ay'},
-  {id:'3-ay',label:'3 Ay'},
-  {id:'uzun-vade',label:'Uzun Vade'},
-  {id:'hepsi',label:'Tümü'},
-]
-
-// ── DEFAULT TASKS ──
-function mkTasks(){
-  const we=weekEnd(),me=monthEnd(),q=qEnd()
-  return[
-    {id:'dj1',cat:'dj',text:'SoundCloud / Mixcloud hesabı aç',sub:'Profesyonel profil + bio ekle',dueDate:we},
-    {id:'dj2',cat:'dj',text:'Mix kaydet veya seç',sub:'60–90 dk, house/techno hybrid',dueDate:we},
-    {id:'dj3',cat:'dj',text:'Mix\'i SoundCloud\'a yükle',sub:'Tags + Utrecht/Amsterdam lokasyonu',dueDate:me},
-    {id:'dj4',cat:'dj',text:'Resident Advisor profili oluştur',sub:'Utrecht lokasyonu, mix linki ekle',dueDate:me},
-    {id:'dj5',cat:'dj',text:'BASIS Utrecht\'i takip et',sub:'BASIS Talents gecesi duyurularını izle',dueDate:me},
-    {id:'dj6',cat:'dj',text:'ACU, WAS., Poema\'ya DM at',sub:'"Eylül\'de taşınıyorum" — kısa, profesyonel',dueDate:me},
-    {id:'dj7',cat:'dj',text:'Utrecht\'e varınca BASIS\'e git',sub:'Yüz yüze tanış, sahne arkası insanlar',dueDate:q},
-    {id:'dj8',cat:'dj',text:'İlk küçük gig veya student partisi al',sub:'Network başlangıcı',dueDate:q},
-    {id:'dj9',cat:'dj',text:'Local DJ\'lerle sosyal medyada etkileşim',sub:'Repost, yorum — yüzün tanınsın',dueDate:q},
-    {id:'dj10',cat:'dj',text:'BASIS Talents\'ta set al',sub:'6 ay network sonrası başvur',dueDate:FAR},
-    {id:'dj11',cat:'dj',text:'Amsterdam\'da ilk gig',sub:'OT301 veya Vondelbunker',dueDate:FAR},
-    {id:'ak1',cat:'akademik',text:'Thesis PsychoPy v3 son bug kontrolü',sub:'UI\'ya dokunmadan fonksiyon testleri',dueDate:we},
-    {id:'ak2',cat:'akademik',text:'Utrecht koşullu kabul gereksinimlerini listele',sub:'Conditional offer detaylarını oku',dueDate:we},
-    {id:'ak3',cat:'akademik',text:'Burs sonuçlarını takip et',sub:'NL Holland + Radboud — Nisan ortası',dueDate:me},
-    {id:'ak4',cat:'akademik',text:'UvA itiraz durumunu kontrol et',sub:'Brain & Cognition in Society',dueDate:me},
-    {id:'ak5',cat:'akademik',text:'Imperial College başvurularını takip et',sub:'MSc Translational + MRes Experimental',dueDate:me},
-    {id:'ak6',cat:'akademik',text:'Thesis veri toplama takvimi oluştur',sub:'Katılımcı planı, Seda Dural ile sync',dueDate:me},
-    {id:'ak7',cat:'akademik',text:'Thesis yazımını tamamla',sub:'Giriş → Yöntem → Bulgular → Tartışma',dueDate:q},
-    {id:'ak8',cat:'akademik',text:'Mezuniyet hazırlıkları',sub:'Haziran 2026 — diploma, evrak',dueDate:q},
-    {id:'ak9',cat:'akademik',text:'Utrecht ilk dönem derslerine hazırlık',sub:'Applied Cog Psy müfredatını incele',dueDate:FAR},
-    {id:'ak10',cat:'akademik',text:'ISMIR için paper fikri geliştir',sub:'Thesis bulgularından türet',dueDate:FAR},
-    {id:'kar1',cat:'kariyer',text:'LinkedIn profilini güncelle',sub:'Utrecht kabul + thesis başlığını ekle',dueDate:we},
-    {id:'kar2',cat:'kariyer',text:'Ryan McGarry (Google UX) ile mesajlaş',sub:'Mezuniyet sonrası plan — görüşme talebi',dueDate:we},
-    {id:'kar3',cat:'kariyer',text:'SQL öğrenmeye başla',sub:'Mode Analytics veya Leetcode SQL',dueDate:me},
-    {id:'kar4',cat:'kariyer',text:'Figma temellerini öğren',sub:'Figma Community — haftada 2 saat',dueDate:me},
-    {id:'kar5',cat:'kariyer',text:'Utrecht staj yerleşimi araştır',sub:'Spotify Amsterdam + Google takvimi',dueDate:q},
-    {id:'kar6',cat:'kariyer',text:'Spotify Amsterdam staj başvurusu',sub:'LinkedIn + referans zinciri kur',dueDate:q},
-    {id:'kar7',cat:'kariyer',text:'FUGA, Armada, Spinnin\' araştır',sub:'Alternatif staj / junior PM hedefleri',dueDate:q},
-    {id:'kar8',cat:'kariyer',text:'Spotify Amsterdam veya Google PM rolü',sub:'5 yıl hedefi — Utrecht stajı kritik',dueDate:FAR},
-    {id:'kar9',cat:'kariyer',text:'ISMIR konferansına katıl',sub:'Spotify Research ekibiyle yüz yüze',dueDate:FAR},
-    {id:'kis1',cat:'kisisel',text:'Utrecht konaklama araştır',sub:'Öğrenci konutları + kiralık daire',dueDate:we},
-    {id:'kis2',cat:'kisisel',text:'BSN numarası ve Hollanda kayıt süreci',sub:'Taşındıktan sonra ilk 5 iş günü',dueDate:me},
-    {id:'kis3',cat:'kisisel',text:'Temel Hollandaca öğren',sub:'Language Transfer Dutch — ücretsiz',dueDate:me},
-    {id:'kis4',cat:'kisisel',text:'Utrecht\'e taşınma lojistiği',sub:'Uçuş, kargo, geçici konaklama',dueDate:q},
-    {id:'kis5',cat:'kisisel',text:'Amsterdam/Utrecht\'te düzen kur',sub:'Sosyal çevre, rutin, müzik+akademi dengesi',dueDate:FAR},
-  ].map(t=>({...t,done:false}))
-}
-
-// ── STATE ──
-const SK='tan_v5'
-let state={tasks:[],time:'bu-hafta',cat:'hepsi'}
-
-function load(){
-  let raw=null
-  try{raw=localStorage.getItem(SK)}catch(e){}
-  if(!raw){try{raw=sessionStorage.getItem(SK)}catch(e){}}
-  if(raw){
-    try{
-      const s=JSON.parse(raw)
-      const saved={}
-      ;(s.tasks||[]).forEach(t=>{saved[t.id]=t})
-      const defaults=mkTasks()
-      const merged=defaults.map(t=>({
-        ...t,
-        done:saved[t.id]?saved[t.id].done:false,
-        dueDate:saved[t.id]?.dueDate||t.dueDate
-      }))
-      ;(s.tasks||[]).filter(t=>t.id.startsWith('c_')).forEach(t=>merged.push(t))
-      state.tasks=merged
-      state.time=s.time||'bu-hafta'
-      state.cat=s.cat||'hepsi'
-    }catch(e){state.tasks=mkTasks()}
-  }else{state.tasks=mkTasks()}
-}
-
-function save(){
-  const d=JSON.stringify(state)
-  try{localStorage.setItem(SK,d)}catch(e){}
-  try{sessionStorage.setItem(SK,d)}catch(e){}
-}
-
-// ── COMPUTED ──
-function getCatColor(id){return CATS.find(c=>c.id===id)?.color||'#888'}
-
+const FAR='2027-12-31';
+function fmtDate(s){if(!s)return'';const[y,m,d]=s.split('-');return d+' '+['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'][parseInt(m)-1]}
+function dateInfo(due){if(!due)return null;const t=today(),we=weekEnd();if(due<t)return{label:'GECİKMİŞ',cls:'overdue-d'};if(due===t)return{label:'BUGÜN',cls:'thisweek-d'};if(due<=we)return{label:'Bu hafta · '+fmtDate(due),cls:'thisweek-d'};return{label:fmtDate(due),cls:'future-d'}}
+const CATEGORIES=[{id:'hepsi',label:'Tümü',color:'#888'},{id:'dj',label:'DJ & Müzik',color:'#ff3c5a'},{id:'akademik',label:'Akademik',color:'#00e5ff'},{id:'kariyer',label:'Kariyer',color:'#b8ff57'},{id:'kisisel',label:'Kişisel',color:'#ff9f43'}];
+const TIME_TABS=[{id:'gecikmiş',label:'Gecikmiş'},{id:'bu-hafta',label:'Bu Hafta'},{id:'bu-ay',label:'Bu Ay'},{id:'3-ay',label:'3 Ay'},{id:'uzun-vade',label:'Uzun Vade'},{id:'hepsi',label:'Tümü'}];
+function mkTasks(){const we=weekEnd(),me=monthEnd(),q=qEnd();return[
+{id:'dj1',cat:'dj',text:'SoundCloud / Mixcloud hesabı aç',sub:'Profesyonel profil + bio ekle',dueDate:we},
+{id:'dj2',cat:'dj',text:'Mix kaydet veya seç',sub:'60–90 dk, house/techno hybrid',dueDate:we},
+{id:'dj3',cat:'dj',text:"Mix'i SoundCloud'a yükle",sub:'Tags + Utrecht/Amsterdam lokasyonu',dueDate:me},
+{id:'dj4',cat:'dj',text:'Resident Advisor profili oluştur',sub:'Utrecht lokasyonu, mix linki ekle',dueDate:me},
+{id:'dj5',cat:'dj',text:"BASIS Utrecht'i takip et",sub:'BASIS Talents gecesi duyurularını izle',dueDate:me},
+{id:'dj6',cat:'dj',text:"ACU, WAS., Poema'ya DM at",sub:"Eylul'de tasiniyorum — kisa, profesyonel",dueDate:me},
+{id:'dj7',cat:'dj',text:"Utrecht'e varinca BASIS'e git",sub:'Yuz yuze tanis, sahne arkasi insanlar',dueDate:q},
+{id:'dj8',cat:'dj',text:'Ilk kucuk gig veya student partisi al',sub:'Network baslangici',dueDate:q},
+{id:'dj9',cat:'dj',text:"Local DJ'lerle sosyal medyada etkilesim",sub:'Repost, yorum — yuzun taninsin',dueDate:q},
+{id:'dj10',cat:'dj',text:"BASIS Talents'ta set al",sub:'6 ay network sonrasi basvur',dueDate:FAR},
+{id:'dj11',cat:'dj',text:"Amsterdam'da ilk gig",sub:'OT301 veya Vondelbunker',dueDate:FAR},
+{id:'ak1',cat:'akademik',text:'Thesis PsychoPy v3 son bug kontrolu',sub:"UI'ya dokunmadan fonksiyon testleri",dueDate:we},
+{id:'ak2',cat:'akademik',text:'Utrecht kosullu kabul gereksinimlerini listele',sub:'Conditional offer detaylarini oku',dueDate:we},
+{id:'ak3',cat:'akademik',text:'Burs sonuclarini takip et',sub:'NL Holland + Radboud — Nisan ortasi',dueDate:me},
+{id:'ak4',cat:'akademik',text:'UvA itiraz durumunu kontrol et',sub:'Brain & Cognition in Society',dueDate:me},
+{id:'ak5',cat:'akademik',text:'Imperial College basvurularini takip et',sub:'MSc Translational + MRes Experimental',dueDate:me},
+{id:'ak6',cat:'akademik',text:'Thesis veri toplama takvimi olustur',sub:'Katilimci plani, Seda Dural ile sync',dueDate:me},
+{id:'ak7',cat:'akademik',text:'Thesis yazimini tamamla',sub:'Giris - Yontem - Bulgular - Tartisma',dueDate:q},
+{id:'ak8',cat:'akademik',text:'Mezuniyet hazirliклари',sub:'Haziran 2026 — diploma, evrak',dueDate:q},
+{id:'ak9',cat:'akademik',text:'Utrecht ilk donem derslerine hazirlik',sub:'Applied Cog Psy mufredatini incele',dueDate:FAR},
+{id:'ak10',cat:'akademik',text:'ISMIR icin paper fikri gelistir',sub:'Thesis bulgularindan turet',dueDate:FAR},
+{id:'kar1',cat:'kariyer',text:'LinkedIn profilini guncelle',sub:'Utrecht kabul + thesis basligini ekle',dueDate:we},
+{id:'kar2',cat:'kariyer',text:'Ryan McGarry (Google UX) ile mesajlas',sub:'Mezuniyet sonrasi plan — gorusme talebi',dueDate:we},
+{id:'kar3',cat:'kariyer',text:'SQL ogrenmeye basla',sub:'Mode Analytics veya Leetcode SQL',dueDate:me},
+{id:'kar4',cat:'kariyer',text:'Figma temellerini ogren',sub:'Figma Community — haftada 2 saat',dueDate:me},
+{id:'kar5',cat:'kariyer',text:'Utrecht staj yerlesimi arastir',sub:'Spotify Amsterdam + Google takvimi',dueDate:q},
+{id:'kar6',cat:'kariyer',text:'Spotify Amsterdam staj basvurusu',sub:'LinkedIn + referans zinciri kur',dueDate:q},
+{id:'kar7',cat:'kariyer',text:"FUGA, Armada, Spinnin' arastir",sub:'Alternatif staj / junior PM hedefleri',dueDate:q},
+{id:'kar8',cat:'kariyer',text:'Spotify Amsterdam veya Google PM rolu',sub:'5 yil hedefi — Utrecht staji kritik',dueDate:FAR},
+{id:'kar9',cat:'kariyer',text:'ISMIR konferansina katil',sub:'Spotify Research ekibiyle yuz yuze',dueDate:FAR},
+{id:'kis1',cat:'kisisel',text:'Utrecht konaklama arastir',sub:'Ogrenci konutlari + kiralik daire',dueDate:we},
+{id:'kis2',cat:'kisisel',text:'BSN numarasi ve Hollanda kayit sureci',sub:'Tasindiktan sonra ilk 5 is gunu',dueDate:me},
+{id:'kis3',cat:'kisisel',text:'Temel Hollandaca ogren',sub:'Language Transfer Dutch — ucretsiz',dueDate:me},
+{id:'kis4',cat:'kisisel',text:"Utrecht'e tasinma lojistigi",sub:'Ucus, kargo, gecici konaklama',dueDate:q},
+{id:'kis5',cat:'kisisel',text:"Amsterdam/Utrecht'te duzen kur",sub:'Sosyal cevre, rutin, muzik+akademi dengesi',dueDate:FAR},
+].map(t=>({...t,done:false}))}
+const SK='tan_v6';
+let state={tasks:[],activeTime:'bu-hafta',activeCat:'hepsi'};
+function load(){let raw=null;try{raw=localStorage.getItem(SK)}catch(e){}if(!raw){try{raw=sessionStorage.getItem(SK)}catch(e){}}if(raw){try{const s=JSON.parse(raw);const saved={};(s.tasks||[]).forEach(t=>{saved[t.id]=t});const merged=mkTasks().map(t=>({...t,done:saved[t.id]?saved[t.id].done:false,dueDate:saved[t.id]?.dueDate||t.dueDate}));(s.tasks||[]).filter(t=>t.id.startsWith('c_')).forEach(t=>merged.push(t));state.tasks=merged;state.activeTime=s.activeTime||'bu-hafta';state.activeCat=s.activeCat||'hepsi'}catch(e){state.tasks=mkTasks()}}else{state.tasks=mkTasks()}}
+function save(){const d=JSON.stringify(state);try{localStorage.setItem(SK,d)}catch(e){}try{sessionStorage.setItem(SK,d)}catch(e){}}
+function getCatColor(id){return CATEGORIES.find(c=>c.id===id)?.color||'#888'}
 function isOv(t){return!t.done&&t.dueDate&&t.dueDate<today()}
 function isTW(t){const we=weekEnd();return!t.done&&t.dueDate&&t.dueDate>=today()&&t.dueDate<=we}
-
-function getFiltered(){
-  const t=today(),we=weekEnd(),me=monthEnd(),q=qEnd()
-  return state.tasks.filter(task=>{
-    const catOk=state.cat==='hepsi'||task.cat===state.cat
-    if(!catOk)return false
-    const d=task.dueDate||FAR
-    if(state.time==='gecikmiş')return!task.done&&d<t
-    if(state.time==='bu-hafta')return d>=t&&d<=we
-    if(state.time==='bu-ay')return d>we&&d<=me
-    if(state.time==='3-ay')return d>me&&d<=q
-    if(state.time==='uzun-vade')return d>q
-    return true
-  })
-}
-
-function ovCount(catId){
-  const t=today()
-  return state.tasks.filter(task=>!task.done&&task.dueDate&&task.dueDate<t&&(catId==='hepsi'||task.cat===catId)).length
-}
-
-function catStats(catId){
-  const tasks=catId==='hepsi'?state.tasks:state.tasks.filter(t=>t.cat===catId)
-  if(!tasks.length)return{pct:0,done:0,total:0}
-  const done=tasks.filter(t=>t.done).length
-  return{pct:Math.round(done/tasks.length*100),done,total:tasks.length}
-}
-
-function gPct(){
-  if(!state.tasks.length)return 0
-  return Math.round(state.tasks.filter(t=>t.done).length/state.tasks.length*100)
-}
-
-// ── ACTIONS ──
-function toggle(id){
-  const t=state.tasks.find(t=>t.id===id)
-  if(t){t.done=!t.done;save();render()}
-}
-
-function quickAdd(text){
-  if(!text.trim())return
-  const cat=state.cat==='hepsi'?'kisisel':state.cat
-  const me=monthEnd(),we=weekEnd(),q=qEnd()
-  let due=me
-  if(state.time==='bu-hafta')due=we
-  else if(state.time==='3-ay')due=q
-  else if(state.time==='uzun-vade')due=FAR
-  state.tasks.push({id:'c_'+Date.now(),cat,text:text.trim(),sub:'',dueDate:due,done:false})
-  save();render()
-}
-
-// ── MODAL ──
-let editId=null,pressTimer=null
-
-function openAdd(){
-  editId=null
-  document.getElementById('mtitle').textContent='Yeni Görev'
-  document.getElementById('mtext').value=''
-  document.getElementById('msub').value=''
-  document.getElementById('mcat').value=state.cat==='hepsi'?'kisisel':state.cat
-  document.getElementById('mdate').value=monthEnd()
-  document.getElementById('delBtn').style.display='none'
-  document.getElementById('moverlay').classList.add('open')
-  setTimeout(()=>document.getElementById('mtext').focus(),150)
-}
-
-function openEdit(id){
-  const t=state.tasks.find(t=>t.id===id)
-  if(!t)return
-  editId=id
-  document.getElementById('mtitle').textContent='Görevi Düzenle'
-  document.getElementById('mtext').value=t.text
-  document.getElementById('msub').value=t.sub||''
-  document.getElementById('mcat').value=t.cat
-  document.getElementById('mdate').value=t.dueDate||monthEnd()
-  document.getElementById('delBtn').style.display=''
-  document.getElementById('moverlay').classList.add('open')
-  setTimeout(()=>document.getElementById('mtext').focus(),150)
-}
-
-function closeModal(){document.getElementById('moverlay').classList.remove('open');editId=null}
-function closeModalOutside(e){if(e.target===document.getElementById('moverlay'))closeModal()}
-
-function saveModal(){
-  const text=document.getElementById('mtext').value.trim()
-  if(!text)return
-  if(editId){
-    const t=state.tasks.find(t=>t.id===editId)
-    if(t){t.text=text;t.sub=document.getElementById('msub').value.trim();t.cat=document.getElementById('mcat').value;t.dueDate=document.getElementById('mdate').value}
-  }else{
-    state.tasks.push({id:'c_'+Date.now(),cat:document.getElementById('mcat').value,text,sub:document.getElementById('msub').value.trim(),dueDate:document.getElementById('mdate').value,done:false})
-  }
-  closeModal();save();render()
-}
-
-function deleteTask(){
-  if(!editId)return
-  if(!confirm('Bu görevi silmek istediğinden emin misin?'))return
-  state.tasks=state.tasks.filter(t=>t.id!==editId)
-  closeModal();save();render()
-}
-
-// ── RENDER ──
-function tiHTML(t){
-  const color=getCatColor(t.cat),ov=isOv(t),di=dateInfo(t.dueDate)
-  return`<div class="ti ${t.done?'done':''} ${ov?'ov':''}"
-    onclick="toggle('${t.id}')"
-    ontouchstart="pressTimer=setTimeout(()=>{clearTimeout(pressTimer);openEdit('${t.id}')},500)"
-    ontouchend="clearTimeout(pressTimer)"
-    ontouchmove="clearTimeout(pressTimer)"
-    oncontextmenu="event.preventDefault();openEdit('${t.id}')">
-    <div class="chk" style="${t.done?`background:${color}22;border-color:${color}55;`:`border-color:${ov?'var(--red)55':color+'44'}`}">
-      <svg viewBox="0 0 11 11" fill="none"><path d="M1.5 5.5L4.5 8.5L9.5 2.5" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <div class="tc">
-      <div class="tt">${t.text}</div>
-      ${t.sub?`<div class="ts">${t.sub}</div>`:''}
-      ${di?`<div class="td ${di.cls}">${di.label}</div>`:''}
-    </div>
-    <div class="tmenu" onclick="event.stopPropagation();openEdit('${t.id}')">⋯</div>
-  </div>`
-}
-
-function addRowHTML(){
-  return`<div class="add-row"><div class="add-inner">
-    <input id="addInput" placeholder="Hızlı ekle..." onkeydown="if(event.key==='Enter'){quickAdd(this.value);this.value=''}">
-    <button onclick="openAdd()">+</button>
-  </div></div>`
-}
-
-function renderTabs(){
-  const oc=ovCount(state.cat)
-  document.getElementById('timeTabs').innerHTML=TTABS.map(t=>{
-    const bdg=t.id==='gecikmiş'&&oc>0?`<span class="bdg">${oc}</span>`:''
-    return`<button class="tb ${state.time===t.id?'active':''}" onclick="setTime('${t.id}')">${t.label}${bdg}</button>`
-  }).join('')
-  document.getElementById('catTabs').innerHTML=CATS.map(c=>{
-    const active=state.cat===c.id
-    const dot=c.id!=='hepsi'?`<span class="dot" style="background:${c.color}"></span>`:''
-    return`<button class="tb ${active?'active':''}"
-      style="${active&&c.id!=='hepsi'?`background:${c.color}22;border-color:${c.color}55;color:${c.color};`:''}"
-      onclick="setCat('${c.id}')">${dot}${c.label}</button>`
-  }).join('')
-}
-
-function renderContent(){
-  const el=document.getElementById('content')
-  const tasks=getFiltered()
-
-  // Summary overview
-  if(state.cat==='hepsi'&&state.time==='hepsi'){
-    const cards=CATS.filter(c=>c.id!=='hepsi').map(c=>{
-      const s=catStats(c.id),oc=ovCount(c.id)
-      return`<div class="sum-card" onclick="setCat('${c.id}')">
-        <div class="sum-top"><div class="sum-dot" style="background:${c.color}"></div><div class="sum-name">${c.label}</div></div>
-        <div class="sum-pct" style="color:${c.color}">${s.pct}%</div>
-        <div class="sum-bar"><div class="sum-fill" style="width:${s.pct}%;background:${c.color}"></div></div>
-        <div class="sum-sub">${s.done}/${s.total} görev</div>
-        ${oc>0?`<div class="sum-ov">⚠ ${oc} gecikmiş</div>`:''}
-      </div>`
-    }).join('')
-    el.innerHTML=`<div class="sum-grid">${cards}</div>
-      ${tasks.length?`<div class="sec-hdr"><span>Tüm Görevler</span><div class="sec-line"></div></div><div class="tlist">${tasks.map(tiHTML).join('')}</div>`:'<div class="empty">Tüm görevler tamamlandı 🎉</div>'}
-      ${addRowHTML()}<div class="bsp"></div>`
-    return
-  }
-
-  // Cat progress bar
-  const cat=CATS.find(c=>c.id===state.cat)
-  const catBar=cat&&cat.id!=='hepsi'?`<div class="cat-bar">
-    <div class="cat-bar-l"><div class="cat-bar-dot" style="background:${cat.color}"></div><div class="cat-bar-name" style="color:${cat.color}">${cat.label}</div></div>
-    <div class="cat-bar-r">${catStats(cat.id).done}/${catStats(cat.id).total}</div>
-  </div>
-  <div class="cat-prog">
-    <div class="cat-prog-lbl">${catStats(cat.id).pct}% tamamlandı</div>
-    <div class="pbar"><div class="pfill" style="width:${catStats(cat.id).pct}%;background:${cat.color}"></div></div>
-  </div>`:''
-
-  // Group when showing all time
-  let body=''
-  if(!tasks.length){
-    body='<div class="empty">Bu zaman diliminde görev yok</div>'
-  }else if(state.time==='hepsi'){
-    const ov=tasks.filter(t=>isOv(t)),tw=tasks.filter(t=>!isOv(t)&&isTW(t)),rest=tasks.filter(t=>!isOv(t)&&!isTW(t))
-    if(ov.length)body+=`<div class="sec-hdr ov">⚠ Gecikmiş<div class="sec-line"></div></div><div class="tlist">${ov.map(tiHTML).join('')}</div>`
-    if(tw.length)body+=`<div class="sec-hdr tw">Bu Hafta<div class="sec-line"></div></div><div class="tlist">${tw.map(tiHTML).join('')}</div>`
-    if(rest.length)body+=`<div class="sec-hdr">İlerleyen<div class="sec-line"></div></div><div class="tlist">${rest.map(tiHTML).join('')}</div>`
-  }else{
-    body=`<div class="tlist">${tasks.map(tiHTML).join('')}</div>`
-  }
-
-  el.innerHTML=`${catBar}${body}${addRowHTML()}<div class="bsp"></div>`
-}
-
-function render(){
-  const p=gPct()
-  document.getElementById('gPct').textContent=p+'%'
-  document.getElementById('gBar').style.width=p+'%'
-  const oc=ovCount('hepsi')
-  const pill=document.getElementById('ovPill')
-  if(oc>0){pill.textContent=oc+' gecikmiş';pill.classList.add('show')}
-  else{pill.classList.remove('show')}
-  renderTabs();renderContent()
-}
-
-function setTime(id){state.time=id;save();render()}
-function setCat(id){state.cat=id;save();render()}
-
-if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))
-window.addEventListener('pagehide',save)
-window.addEventListener('beforeunload',save)
-setInterval(save,8000)
-
-load();render()
+function getFiltered(){const t=today(),we=weekEnd(),me=monthEnd(),q=qEnd();return state.tasks.filter(task=>{const catOk=state.activeCat==='hepsi'||task.cat===state.activeCat;if(!catOk)return false;const d=task.dueDate||FAR;if(state.activeTime==='gecikmiş')return!task.done&&d<t;if(state.activeTime==='bu-hafta')return d>=t&&d<=we;if(state.activeTime==='bu-ay')return d>we&&d<=me;if(state.activeTime==='3-ay')return d>me&&d<=q;if(state.activeTime==='uzun-vade')return d>q;return true})}
+function ovCount(catId){const t=today();return state.tasks.filter(task=>!task.done&&task.dueDate&&task.dueDate<t&&(catId==='hepsi'||task.cat===catId)).length}
+function catStats(catId){const tasks=catId==='hepsi'?state.tasks:state.tasks.filter(t=>t.cat===catId);if(!tasks.length)return{pct:0,done:0,total:0};const done=tasks.filter(t=>t.done).length;return{pct:Math.round(done/tasks.length*100),done,total:tasks.length}}
+function globalPct(){if(!state.tasks.length)return 0;return Math.round(state.tasks.filter(t=>t.done).length/state.tasks.length*100)}
+function toggle(id){const t=state.tasks.find(t=>t.id===id);if(t){t.done=!t.done;save();render()}}
+function quickAdd(text){if(!text.trim())return;const cat=state.activeCat==='hepsi'?'kisisel':state.activeCat;const me=monthEnd(),we=weekEnd(),q=qEnd();let due=me;if(state.activeTime==='bu-hafta')due=we;else if(state.activeTime==='3-ay')due=q;else if(state.activeTime==='uzun-vade')due=FAR;state.tasks.push({id:'c_'+Date.now(),cat,text:text.trim(),sub:'',dueDate:due,done:false});save();render()}
+let editId=null,pressTimer=null;
+function openAdd(){editId=null;document.getElementById('modalTitle').textContent='Yeni Gorev';document.getElementById('mText').value='';document.getElementById('mSub').value='';document.getElementById('mCat').value=state.activeCat==='hepsi'?'kisisel':state.activeCat;document.getElementById('mDate').value=monthEnd();document.getElementById('delBtn').style.display='none';document.getElementById('modalOverlay').classList.add('open');setTimeout(()=>document.getElementById('mText').focus(),150)}
+function openEdit(id){const t=state.tasks.find(t=>t.id===id);if(!t)return;editId=id;document.getElementById('modalTitle').textContent='Gorevi Duzenle';document.getElementById('mText').value=t.text;document.getElementById('mSub').value=t.sub||'';document.getElementById('mCat').value=t.cat;document.getElementById('mDate').value=t.dueDate||monthEnd();document.getElementById('delBtn').style.display='';document.getElementById('modalOverlay').classList.add('open');setTimeout(()=>document.getElementById('mText').focus(),150)}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');editId=null}
+function closeModalOutside(e){if(e.target===document.getElementById('modalOverlay'))closeModal()}
+function saveModal(){const text=document.getElementById('mText').value.trim();if(!text)return;if(editId){const t=state.tasks.find(t=>t.id===editId);if(t){t.text=text;t.sub=document.getElementById('mSub').value.trim();t.cat=document.getElementById('mCat').value;t.dueDate=document.getElementById('mDate').value}}else{state.tasks.push({id:'c_'+Date.now(),cat:document.getElementById('mCat').value,text,sub:document.getElementById('mSub').value.trim(),dueDate:document.getElementById('mDate').value,done:false})}closeModal();save();render()}
+function deleteTask(){if(!editId)return;if(!confirm('Bu gorevi silmek istediginizden emin misiniz?'))return;state.tasks=state.tasks.filter(t=>t.id!==editId);closeModal();save();render()}
+function tiHTML(t){const color=getCatColor(t.cat),ov=isOv(t),di=dateInfo(t.dueDate);return`<div class="task-item ${t.done?'done':''} ${ov?'overdue':''}" onclick="toggle('${t.id}')" ontouchstart="pressTimer=setTimeout(()=>{clearTimeout(pressTimer);openEdit('${t.id}')},500)" ontouchend="clearTimeout(pressTimer)" ontouchmove="clearTimeout(pressTimer)" oncontextmenu="event.preventDefault();openEdit('${t.id}')"><div class="task-checkbox" style="${t.done?`background:${color}22;border-color:${color}55;`:`border-color:${ov?'#ff3c5a55':color+'44'}`}"><svg viewBox="0 0 11 11" fill="none"><path d="M1.5 5.5L4.5 8.5L9.5 2.5" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="task-content"><div class="task-text">${t.text}</div>${t.sub?`<div class="task-sub">${t.sub}</div>`:''} ${di?`<div class="task-date ${di.cls}">${di.label}</div>`:''}</div><div class="task-menu" onclick="event.stopPropagation();openEdit('${t.id}')">&#8943;</div></div>`}
+function addRowHTML(){return`<div class="add-row"><div class="add-inner"><input id="addInput" placeholder="Hizli gorev ekle..." onkeydown="if(event.key==='Enter'){quickAdd(this.value);this.value=''}"><button onclick="openAdd()">+</button></div></div>`}
+function renderTimeTabs(){const oc=ovCount(state.activeCat);document.getElementById('timeTabs').innerHTML=TIME_TABS.map(t=>{const badge=t.id==='gecikmiş'&&oc>0?`<span class="bdg">${oc}</span>`:'';return`<button class="time-tab ${state.activeTime===t.id?'active':''}" onclick="setTime('${t.id}')">${t.label}${badge}</button>`}).join('')}
+function renderCatTabs(){document.getElementById('catTabs').innerHTML=CATEGORIES.map(c=>{const active=state.activeCat===c.id;const dot=c.id!=='hepsi'?`<span class="dot" style="background:${c.color}"></span>`:'';return`<button class="cat-tab ${active?'active':''}" style="${active&&c.id!=='hepsi'?`background:${c.color}22;border-color:${c.color}66;color:${c.color};`:''}" onclick="setCat('${c.id}')">${dot}${c.label}</button>`}).join('')}
+function renderContent(){const el=document.getElementById('content');const tasks=getFiltered();if(state.activeCat==='hepsi'&&state.activeTime==='hepsi'){const cards=CATEGORIES.filter(c=>c.id!=='hepsi').map(c=>{const s=catStats(c.id),oc=ovCount(c.id);return`<div class="summary-card" onclick="setCat('${c.id}')"><div class="summary-card-top"><div class="summary-dot" style="background:${c.color}"></div><div class="summary-name">${c.label}</div></div><div class="summary-pct" style="color:${c.color}">${s.pct}%</div><div class="summary-bar"><div class="summary-fill" style="width:${s.pct}%;background:${c.color}"></div></div><div class="summary-sub">${s.done}/${s.total} gorev</div>${oc>0?`<div class="summary-ov">&#9888; ${oc} gecikmiş</div>`:''}</div>`}).join('');el.innerHTML=`<div class="all-cats-summary">${cards}</div>${tasks.length?`<div class="task-list">${tasks.map(tiHTML).join('')}</div>`:'<div class="empty-state">Tum gorevler tamamlandi</div>'}${addRowHTML()}<div class="bottom-space"></div>`;return}
+const cat=CATEGORIES.find(c=>c.id===state.activeCat);let catBarHTML='';if(cat&&cat.id!=='hepsi'){const s=catStats(cat.id);catBarHTML=`<div class="cat-info"><div class="cat-info-left"><div class="cat-info-dot" style="background:${cat.color}"></div><div class="cat-info-name" style="color:${cat.color}">${cat.label}</div></div><div class="cat-info-count">${s.done}/${s.total}</div></div><div class="cat-progress-row"><div class="cat-progress-label">${s.pct}% tamamlandi</div><div class="progress-bar"><div class="progress-fill" style="width:${s.pct}%;background:${cat.color}"></div></div></div>`}
+let taskHTML='';if(!tasks.length){taskHTML='<div class="empty-state">Bu zaman diliminde gorev yok</div>'}else if(state.activeTime==='hepsi'){const ov=tasks.filter(t=>isOv(t)),tw=tasks.filter(t=>!isOv(t)&&isTW(t)),rest=tasks.filter(t=>!isOv(t)&&!isTW(t));if(ov.length)taskHTML+=`<div class="sec-div ov">&#9888; Gecikmiş<div class="sec-div-line"></div></div><div class="task-list">${ov.map(tiHTML).join('')}</div>`;if(tw.length)taskHTML+=`<div class="sec-div tw">Bu Hafta<div class="sec-div-line"></div></div><div class="task-list">${tw.map(tiHTML).join('')}</div>`;if(rest.length)taskHTML+=`<div class="sec-div">Ilerleyen<div class="sec-div-line"></div></div><div class="task-list">${rest.map(tiHTML).join('')}</div>`}else{taskHTML=`<div class="task-list">${tasks.map(tiHTML).join('')}</div>`}
+el.innerHTML=`${catBarHTML}${taskHTML}${addRowHTML()}<div class="bottom-space"></div>`}
+function render(){const pct=globalPct();document.getElementById('globalPct').textContent=pct+'%';document.getElementById('globalBar').style.width=pct+'%';const oc=ovCount('hepsi');const pill=document.getElementById('ovPill');if(oc>0){pill.textContent=oc+' gecikmiş';pill.classList.add('show')}else{pill.classList.remove('show')}renderTimeTabs();renderCatTabs();renderContent()}
+function setTime(id){state.activeTime=id;save();render()}
+function setCat(id){state.activeCat=id;save();render()}
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+window.addEventListener('pagehide',save);
+window.addEventListener('beforeunload',save);
+setInterval(save,8000);
+load();render();
 </script>
 </body>
 </html>
